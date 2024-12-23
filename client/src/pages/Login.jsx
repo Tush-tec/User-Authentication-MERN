@@ -1,10 +1,12 @@
 import React from 'react'
 import { loginUser } from '../utils/api'
 import AuthForm from '../components/AuthForm'
+import { toast } from 'react-toastify'
+import { useNavigate } from 'react-router-dom';
 
 
 function Login(){
-
+    const navigate = useNavigate();
     const handleSubmit = async (e)=>{
         e.preventDefault();
 
@@ -13,13 +15,14 @@ function Login(){
 
        try {
            const { data } = await loginUser({email,password});
-           console.log('Logged in:',data);
-           
+           localStorage.setItem('authToken', data.token);
+           toast.success("Login successfull")
+           navigate('/chat'); 
        } catch (error) {
-        console.error('Login error', error.response.data.message)
+        toast.error(error.response?.data?.message || 'Login failed');
        }
-       e.target.email.value =''
-       e.target.password.value =''
+    //    e.target.email.value =''
+    //    e.target.password.value =''
     }
     return (
     <AuthForm 

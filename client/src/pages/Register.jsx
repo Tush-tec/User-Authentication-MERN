@@ -1,21 +1,22 @@
 import React from 'react'
 import {registerUser} from '../utils/api'
 import AuthForm from '../components/AuthForm'
-
+import {toast} from 'react-toastify'
 
 const Register =()=>{
     const handleSubmit = async (e)=>{
         e.preventDefault();
-        
         const name = e.target.name.value;
         const email = e.target.email.value;
         const password = e.target.password.value;
 
             try {
                 const { data } = await registerUser({name,email,password});
-                console.log('Registered',data);
+                toast.success('Registration successfull Please login.');
+                window.location.href= '/login'
+                
             } catch (error) {
-                console.error('Registration error', error.response.data.message)
+                toast.error(error.response?.data?.message || 'Registration failed')
             }
     }
 
