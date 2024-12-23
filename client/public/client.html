@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Socket.IO Test</title>
+</head>
+<body>
+  <h1>Socket.IO Test</h1>
+  <input id="message" type="text" placeholder="Type a message..." />
+  <button onclick="sendMessage()">Send</button>
+
+  <ul id="messages"></ul>
+
+  <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+  <script>
+    const socket = io('http://localhost:5000'); // Replace with your server URL
+
+    socket.on('connect', () => {
+      console.log(`Connected with ID: ${socket.id}`);
+    });
+
+    socket.on('receiveMessage', (message) => {
+      const messages = document.getElementById('messages');
+      const li = document.createElement('li');
+      li.textContent = message;
+      messages.appendChild(li);
+    });
+
+    function sendMessage() {
+      const message = document.getElementById('message').value;
+      socket.emit('sendMessage', message);
+    }
+  </script>
+</body>
+</html>

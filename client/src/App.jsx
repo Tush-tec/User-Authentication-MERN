@@ -1,7 +1,9 @@
 import Navbar from './components/Navbar'
 import Login from './pages/Login'
-import Chatroom from './pages/Chatroom'
+import Register from './pages/Register'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+
+
 function App() {
 
   return (
@@ -9,11 +11,11 @@ function App() {
     <Router>
       <Navbar/>
       <Routes>
-        <Route path="/" element={<Login/>}/>
-        <Route path="/Chat" element={<Chatroom/>}/>
+        <Route path="/login" element={<Login/>}/>
+        <Route path="/register" element={<Register/>}/>
       </Routes>
     </Router>
-  )
-}
+  );
+};
 
 export default App

@@ -1,11 +1,36 @@
+import React from 'react'
+import { loginUser } from '../utils/api'
+import AuthForm from '../components/AuthForm'
+
 
 function Login(){
+
+    const handleSubmit = async (e)=>{
+        e.preventDefault();
+
+       const email = e.target.email.value
+       const password = e.target.password.value
+
+       try {
+           const { data } = await loginUser({email,password});
+           console.log('Logged in:',data);
+           
+       } catch (error) {
+        console.error('Login error', error.response.data.message)
+       }
+       e.target.email.value =''
+       e.target.password.value =''
+    }
     return (
-        <div className="py-1">
-            <h1 className="text-3xl font-bold text-center bg-blue-600 text-white p-4">
-      Login Page
-    </h1>
-        </div>
+    <AuthForm 
+    title="Login"
+    handleSubmit={handleSubmit}
+    buttonText="Login"
+    fields={[
+        {name:'email',type:'email',placeholder:'Enter Email'},
+        {name:'password',type:'password',placeholder:'Enter Password'}
+    ]}
+    />
     )
 }
 
