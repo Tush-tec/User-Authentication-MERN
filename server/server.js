@@ -5,7 +5,7 @@ import http from 'http'
 import connectDB from './config/db.js'
 import authRoutes from './routes/auth.js'
 import dotenv from 'dotenv';
-
+import messageRoutes from './routes/message.js'
 
 dotenv.config();
 connectDB();
@@ -16,6 +16,7 @@ app.use(cors())
 
 
 app.use('/api/auth', authRoutes)
+app.use('/api/messages', messageRoutes)
 
 const server = http.createServer(app)
 

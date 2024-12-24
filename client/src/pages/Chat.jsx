@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
+import { io } from 'socket.io-client';
 
-function Chat() {
-  return (
-    <div>Chasdsadst</div>
-  )
-}
+const socket = io("http://localhost:5000");
 
-export default Chat
+const Chat = () => {
+    
+    return (
+    <h1>Chat</h1>
+    );
+};
+
+export default Chat;
