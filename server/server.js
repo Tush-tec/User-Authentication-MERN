@@ -1,44 +1,26 @@
-import express from 'express'
-import cors from 'cors'
-import { Server } from 'socket.io'
-import http from 'http'
-import connectDB from './config/db.js'
-import authRoutes from './routes/auth.js'
+import express from 'express';
+import mongoose from 'mongoose';
 import dotenv from 'dotenv';
-import messageRoutes from './routes/message.js'
+import cors from 'cors';
+
+import adminRoutes from './routes/admin.js';
 
 dotenv.config();
-connectDB();
+const app = express();
 
-const app = express()
-app.use(express.json())
-app.use(cors())
+app.use(cors({
+  origin: 'http://localhost:5173', // or whatever port your React app runs on
+  credentials: true,
+  methods: ['GET', 'POST'],
+}));
 
+app.use(express.json());
 
-app.use('/api/auth', authRoutes)
-app.use('/api/messages', messageRoutes)
+app.use('/api/admin', adminRoutes);
 
-const server = http.createServer(app)
-
-const io = new Server(server, {
-    cors:{
-        origin : process.env.CLIENT_URL,
-        method:['GET','POST']
-    }
-})
-
-io.on('connection', (socket)=>{
-    console.log(`User connected: ${socket.id}`);
-    socket.on('sendMessage',(message)=>{
-        console.log(`Message received: ${message}`);
-        socket.broadcast.emit('receiveMessage',message)
-    });
-
-    socket.on('disconnect',()=>{
-        console.log(`User disconnected: ${socket.id}`);
-    });
-})
-const PORT = process.env.PORT || 8080;
-server.listen(PORT, ()=>{
-    console.log(`Server running at http://localhost:${PORT}`);  
-})
+mongoose.connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log('MongoDB connected');
+    app.listen(5000, () => console.log('Server on port 5000'));
+  })
+  .catch(err => console.error(err));
